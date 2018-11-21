@@ -36,7 +36,7 @@ class Generator:
 
 
         # encoding is done by shifting the binary message to the right x digits, where x is the degree of the polynomial,
-        # then subtract the remainder from it.
+        # then subtract the remainder from it/ add the divider minus the remainder (as in the case here).
 
         # convert the string value of a binary number to int (decimal)
         # shifting (for decimals): multiplication by 2 raised to some power
