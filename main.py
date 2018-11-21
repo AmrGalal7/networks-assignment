@@ -14,7 +14,7 @@ def printlongdiv(lhs, rhs):
 	while (div | rem) > 2*div:
 		div <<= 1
 		count += 1
-			
+
 	# now keep dividing until we are back where we started.
 	quot = 0
 	data = ""
@@ -76,6 +76,8 @@ def getDataFromFile(flag,inputString):
 		if(m.find("\n")):
 			m=m[:-1]
 		k=file.readline()
+		if(k.find("\n")):
+			k=k[:-1]
 		return m , k , inputString
 	if(flag==2):
 		bit=""
@@ -90,8 +92,8 @@ if(counter==1):
 	g = Generator(m, k)
 	printlongdiv(int(m, 2), int(k, 2))
 	genOutput = g.encode()
-	g.GeneratorDivider = g.getDivider()
-	v = Verifier(genOutput, g.GeneratorDivider)
+	g.GeneratorDivisor = g.getDivisor()
+	v = Verifier(genOutput, g.GeneratorDivisor)
 	v.verify()
 # case of generator, alter, and verifier
 if(counter==2):
@@ -99,11 +101,8 @@ if(counter==2):
 	g = Generator(m, k)
 	printlongdiv(int(m, 2), int(k, 2))
 	genOutput = g.encode()
-	g.GeneratorDivider = g.getDivider()
+	g.GeneratorDivisor = g.getDivisor()
 	bit , inputString = getDataFromFile(2,inputString)
 	messageAltered = alter(bit, genOutput)
-	v = Verifier(messageAltered, g.GeneratorDivider)
+	v = Verifier(messageAltered, g.GeneratorDivisor)
 	v.verify()
-
-
-

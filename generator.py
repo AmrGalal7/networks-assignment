@@ -1,31 +1,34 @@
+from utils import *
+
 class Generator:
     """
-    encodes a message based on a given polynomial/ divider
+    encodes a message based on a given polynomial/ divisor
 
     Class Attribute:
     ----------------
                     'GeneratorDivider': stores the polynomial, so it can be sent to the Verifier Class
     """
 
-    GeneratorDivider = None
+    GeneratorDivisor = None
 
-    def __init__(self, message, divider):
+    def __init__(self, message, divisor):
         """
         Instances Attributes:
         ---------------------
                     'self.__message': holds the string of 0s and 1s of the message to be encoded
-                    'self.__divider': holds the string of 0s and 1s of the polynomial
+                    'self.__divisor': holds the string of 0s and 1s of the polynomial
         """
         self.__message = message
-        self.__divider = divider
+        self.__divisor = divisor
 
-    def getDivider(self):
+    def getDivisor(self):
         """
         Return:
         -------
                     the string representation of the polynomial
         """
-        return self.__divider
+        return self.__divisor
+
 
     def encode(self):
         """
@@ -34,28 +37,18 @@ class Generator:
                     a string representation of the encoded message
         """
 
+        divisorLength = len(self.__divisor)
+        # Appends n-1 zeroes at end of message
+        appended_data = self.__message + '0'*(divisorLength - 1)
 
-        # encoding is done by shifting the binary message to the right x digits, where x is the degree of the polynomial,
-        # then subtract the remainder from it/ add the divider minus the remainder (as in the case here).
+        # apply CRC:
 
-        # convert the string value of a binary number to int (decimal)
-        # shifting (for decimals): multiplication by 2 raised to some power
-        # degree of the polynomial: length of the polynomial - 1
-
-        messageDecimal = int(self.__message, 2) * 2**(len(self.__divider) - 1)
-        dividerDecimal = int(self.__divider, 2)
-
-        # calculate the remainder of the division of the message by the polynomial
-        remainder = messageDecimal - (messageDecimal // dividerDecimal ) * dividerDecimal
-        print(remainder)
-
-        # the message becomes in the format: 0b10110
-        # the indexing to skip '0b'
-        # the message is then converted into string
-        data = str(bin(messageDecimal + (dividerDecimal - remainder)))[2:]
+        remainder = mod2div(appended_data, self.__divisor)
+        # Append the remainder to the original message
+        codeword = self.__message + remainder
 
         # save the message on disk
         with open('transmitted_msg.txt', 'w') as f:
-            f.write(data)
+            f.write(codeword)
 
-        return data
+        return codeword
