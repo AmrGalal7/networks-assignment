@@ -60,9 +60,6 @@ if(counter==2):
 	g = Generator(m, k)
 	genOutput = g.encode()
 	g.GeneratorDivider = g.getDivider()
-	v = Verifier(genOutput, g.GeneratorDivider)
-	v.verify()
-
 	bit , inputString = getDataFromFile(2,inputString)
 	messageAltered = alter(bit, genOutput)
 	v = Verifier(messageAltered, g.GeneratorDivider)
