@@ -21,18 +21,14 @@ def printlongdiv(lhs, rhs):
 	while count>0:
 		quot <<= 1
 		count -= 1
-		print("%14s" % bitstring(rem))
 		data = data + ("%12s" % bitstring(rem)) + "\n"
 		divstr = bitstring(div)
 		if (rem ^ div) < rem:
 				quot |= 1
 				rem ^= div
-				print(1 , " " * (11-len(divstr)) , divstr[:origlen])
 				data = data + ('1' + " " * (11-len(divstr)) + divstr[:origlen]) + "\n"
 		else:
-				print(0 , " " * (11-len(divstr)) , "0" * origlen)
 				data = data + ('0' + " " * (11-len(divstr)) + "0" * origlen) + "\n"
-		print(" " * (13-len(divstr)) + "-" * origlen)
 		data = data + (" " * (13-len(divstr)) + "-" * origlen) + "\n"
 		div >>= 1
 	data = data + ("%12s <<< remainder" % bitstring(rem)) + "\n"
