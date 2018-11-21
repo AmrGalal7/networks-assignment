@@ -1,6 +1,42 @@
 from generator import Generator
 from verifier import Verifier
 
+def bitstring(x):  return bin(x)[2:]
+
+def printlongdiv(lhs, rhs):
+    rem = lhs
+    div = rhs
+    origlen = len(bitstring(div))
+		# data = ""
+    # first shift left until the leftmost bits line up.
+    count = 1
+    while (div | rem) > 2*div:
+        div <<= 1
+        count += 1
+				
+    # now keep dividing until we are back where we started.
+    quot = 0
+		data = ""
+    while count>0:
+        quot <<= 1
+        count -= 1
+        data = data + ("%14s" % bitstring(rem)) + "/n"
+        divstr = bitstring(div)
+        if (rem ^ div) < rem:
+            quot |= 1
+            rem ^= div
+            data = data + (1, " " * (11-len(divstr)), divstr[:origlen]) + "/n"
+        else:
+            data = data + (0, " " * (11-len(divstr)), "0" * origlen) + "/n"
+        data = data + (" " * (13-len(divstr)), "-" * origlen) + "/n"
+        div >>= 1
+    data = data + ("%14s <<< remainder" % bitstring(rem)) + "/n"
+    data = data + (" -> %10s <<< quotient" % bitstring(quot)) + "/n"
+
+		with open('longDivision.txt', 'w') as f:
+				f.write(data)
+
+
 def alter(convertedBit, message):
 
 	firstPart=message[:convertedBit-1]
@@ -50,6 +86,7 @@ def getDataFromFile(flag,inputString):
 if(counter==1):
 	m , k , inputString = getDataFromFile(1,inputString)
 	g = Generator(m, k)
+	printlongdiv(int(m, 2), int(k, 2))
 	genOutput = g.encode()
 	g.GeneratorDivider = g.getDivider()
 	v = Verifier(genOutput, g.GeneratorDivider)
@@ -64,4 +101,6 @@ if(counter==2):
 	messageAltered = alter(bit, genOutput)
 	v = Verifier(messageAltered, g.GeneratorDivider)
 	v.verify()
+
+
 
