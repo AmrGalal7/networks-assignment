@@ -34,20 +34,25 @@ class Generator:
                     a string representation of the encoded message
         """
 
-        # convert the string value of a binary number to int
-        messageDecimal = int(self.__message, 2)
+
+        # encoding is done by shifting the binary message to the right x digits, where x is the degree of the polynomial,
+        # then subtract the remainder from it.
+
+        # convert the string value of a binary number to int (decimal)
+        # shifting (for decimals): multiplication by 2 raised to some power
+        # degree of the polynomial: length of the polynomial
+
+        messageDecimal = int(self.__message, 2) * 2**len(self.__divider)
         dividerDecimal = int(self.__divider, 2)
 
         # calculate the remainder of the division of the message by the polynomial
         remainder = messageDecimal - (messageDecimal // dividerDecimal ) * dividerDecimal
 
-        # shift the binary message to the right x digits, where x is the degree of the polynomial, then subtract the remainder from it.
-        # shifting (for decimals): multiplication by 2 raised to some power
-        # degree of the polynomial: length of the polynomial
+
         # the message becomes in the format: 0b10110
         # the indexing to skip '0b'
         # the message is then converted into string
-        data = str(bin(messageDecimal * 2**len(self.__divider) - remainder))[2:]
+        data = str(bin(messageDecimal - remainder))[2:]
 
         # save the message on disk
         with open('transmitted_msg.txt', 'w') as f:
