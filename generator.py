@@ -40,19 +40,19 @@ class Generator:
 
         # convert the string value of a binary number to int (decimal)
         # shifting (for decimals): multiplication by 2 raised to some power
-        # degree of the polynomial: length of the polynomial
+        # degree of the polynomial: length of the polynomial - 1
 
-        messageDecimal = int(self.__message, 2) * 2**len(self.__divider)
+        messageDecimal = int(self.__message, 2) * 2**(len(self.__divider) - 1)
         dividerDecimal = int(self.__divider, 2)
 
         # calculate the remainder of the division of the message by the polynomial
         remainder = messageDecimal - (messageDecimal // dividerDecimal ) * dividerDecimal
-
+        print(remainder)
 
         # the message becomes in the format: 0b10110
         # the indexing to skip '0b'
         # the message is then converted into string
-        data = str(bin(messageDecimal - remainder))[2:]
+        data = str(bin(messageDecimal + (dividerDecimal - remainder)))[2:]
 
         # save the message on disk
         with open('transmitted_msg.txt', 'w') as f:
