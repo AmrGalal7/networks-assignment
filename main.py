@@ -3,38 +3,44 @@ from verifier import Verifier
 
 def bitstring(x):  return bin(x)[2:]
 
-def printlongdiv(lhs, rhs):
-    rem = lhs
-    div = rhs
-    origlen = len(bitstring(div))
-		# data = ""
-    # first shift left until the leftmost bits line up.
-    count = 1
-    while (div | rem) > 2*div:
-        div <<= 1
-        count += 1
-				
-    # now keep dividing until we are back where we started.
-    quot = 0
-		data = ""
-    while count>0:
-        quot <<= 1
-        count -= 1
-        data = data + ("%14s" % bitstring(rem)) + "/n"
-        divstr = bitstring(div)
-        if (rem ^ div) < rem:
-            quot |= 1
-            rem ^= div
-            data = data + (1, " " * (11-len(divstr)), divstr[:origlen]) + "/n"
-        else:
-            data = data + (0, " " * (11-len(divstr)), "0" * origlen) + "/n"
-        data = data + (" " * (13-len(divstr)), "-" * origlen) + "/n"
-        div >>= 1
-    data = data + ("%14s <<< remainder" % bitstring(rem)) + "/n"
-    data = data + (" -> %10s <<< quotient" % bitstring(quot)) + "/n"
 
-		with open('longDivision.txt', 'w') as f:
-				f.write(data)
+def printlongdiv(lhs, rhs):
+	rem = lhs
+	div = rhs
+	origlen = len(bitstring(div))
+	# data = ""
+	# first shift left until the leftmost bits line up.
+	count = 1
+	while (div | rem) > 2*div:
+		div <<= 1
+		count += 1
+			
+	# now keep dividing until we are back where we started.
+	quot = 0
+	data = ""
+	while count>0:
+		quot <<= 1
+		count -= 1
+		print("%14s" % bitstring(rem))
+		data = data + ("%12s" % bitstring(rem)) + "\n"
+		divstr = bitstring(div)
+		if (rem ^ div) < rem:
+				quot |= 1
+				rem ^= div
+				print(1 , " " * (11-len(divstr)) , divstr[:origlen])
+				data = data + ('1' + " " * (11-len(divstr)) + divstr[:origlen]) + "\n"
+		else:
+				print(0 , " " * (11-len(divstr)) , "0" * origlen)
+				data = data + ('0' + " " * (11-len(divstr)) + "0" * origlen) + "\n"
+		print(" " * (13-len(divstr)) + "-" * origlen)
+		data = data + (" " * (13-len(divstr)) + "-" * origlen) + "\n"
+		div >>= 1
+	data = data + ("%12s <<< remainder" % bitstring(rem)) + "\n"
+	data = data + (" -> %10s <<< quotient" % bitstring(quot)) + "\n"
+
+
+	with open('longDivision.txt', 'w') as f:
+		f.write(data)
 
 
 def alter(convertedBit, message):
@@ -52,12 +58,12 @@ def alter(convertedBit, message):
 	#print("falseMassage = ",falseMassage)
 	return falseMassage;
 
-
 inputString= input("Enter your command\n")
 counter =0
 for c in range(len(inputString)):
 	if inputString[c]=="|":
 		counter+=1
+
 
 def getDataFromFile(flag,inputString):
 #open file and get data from it
