@@ -95,6 +95,7 @@ if(counter==1):
 if(counter==2):
 	m , k , inputString = getDataFromFile(1,inputString)
 	g = Generator(m, k)
+	printlongdiv(int(m, 2), int(k, 2))
 	genOutput = g.encode()
 	g.GeneratorDivider = g.getDivider()
 	bit , inputString = getDataFromFile(2,inputString)
