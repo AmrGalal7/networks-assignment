@@ -5,7 +5,7 @@ CRC based message encoder and error detector.
 ## running
 Open main.exe
 - type `generator < file | verifier` to encode the message and have it checked by the verifier.
-- type `generator < file | alter pos | verifier` to invert the 'pos' bit in the encoded message, then run the verifier.
+- type `generator < file | alter pos | verifier` to invert the 'pos' bit in the encoded message, where 'pos' is a number from 1 to message length, then run the verifier.
 
 *make sure 'file' is in the same directory as main.exe, and use only the file name (i.e. without '.txt')*
 #### using terminal:
